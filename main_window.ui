@@ -14,12 +14,22 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" columnstretch="4,1,1,2">
-    <item row="0" column="0">
-     <widget class="QLineEdit" name="search_line"/>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,1" columnstretch="4,0,0,1,1" rowminimumheight="0,0,0">
+    <item row="0" column="3">
+     <spacer name="spacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item row="0" column="1">
-     <widget class="QPushButton" name="search_button">
+     <widget class="QPushButton" name="search_btn">
       <property name="font">
        <font>
         <pointsize>14</pointsize>
@@ -33,37 +43,62 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QLineEdit" name="search_bar"/>
+    </item>
     <item row="0" column="2">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
+     <widget class="QPushButton" name="refresh_btn">
+      <property name="minimumSize">
        <size>
-        <width>40</width>
-        <height>20</height>
+        <width>0</width>
+        <height>37</height>
        </size>
       </property>
-     </spacer>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 255, 0);</string>
+      </property>
+      <property name="text">
+       <string>Сброс</string>
+      </property>
+     </widget>
     </item>
-    <item row="0" column="3">
+    <item row="0" column="4">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="view_text">
+       <widget class="QLabel" name="map_l_label">
         <property name="text">
-         <string>View</string>
+         <string>Вид карты</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="viewComboBox"/>
+       <widget class="QComboBox" name="map_l"/>
       </item>
      </layout>
     </item>
-    <item row="1" column="0" colspan="4">
-     <widget class="QLabel" name="map_label">
+    <item row="2" column="0" colspan="5">
+     <widget class="QLabel" name="image">
       <property name="text">
        <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="4">
+     <widget class="QLabel" name="address_label">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QRadioButton" name="index_btn">
+      <property name="text">
+       <string>индекс</string>
       </property>
      </widget>
     </item>
