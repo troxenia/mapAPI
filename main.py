@@ -15,6 +15,7 @@ from useful_functions.geocoder3 import get_coordinates, geocode
 class MapAPI(QMainWindow):
     map_l_list = ('map', 'sat', 'sat,skl')
     pt_type = 'pm2bll'
+    image_width, image_height = 600, 450
 
     def __init__(self):
         super().__init__()
@@ -29,17 +30,18 @@ class MapAPI(QMainWindow):
 
         self.map_ll = [37.530887, 55.703118]
         self.ll_delta = 0.001
-        self.map_spn = [0.01, 0.01]
+        self.map_spn = 0.01
         self.spn_delta = 0.0001
         self.map_pt = tuple()
 
         self.set_image()
         self.setFocusPolicy(Qt.StrongFocus)  # necessary for keyboard events
+        self.image.setFocus()
 
     def set_image(self):
         params = {
             'll': ','.join(map(str, self.map_ll)),
-            'spn': ','.join(map(str, self.map_spn)),
+            'spn': f'{self.map_spn},{self.map_spn}',
             'l': self.map_l_list[self.map_l.currentIndex()],
             'pt': ','.join(map(str, self.map_pt)) + ',' + self.pt_type if self.map_pt else self.map_pt
         }
@@ -57,12 +59,10 @@ class MapAPI(QMainWindow):
 
     def keyPressEvent(self, event):
         self.statusbar.showMessage('')
-        if event.key() == Qt.Key_PageUp and all(spn + self.spn_delta <= 90 for spn in self.map_spn):
-            self.map_spn[0] = (self.map_spn[0] + self.spn_delta) % 90
-            self.map_spn[1] = (self.map_spn[1] + self.spn_delta) % 90
-        elif event.key() == Qt.Key_PageDown and all(spn - self.spn_delta >= -90 for spn in self.map_spn):
-            self.map_spn[0] = (self.map_spn[0] - self.spn_delta) % 90
-            self.map_spn[1] = (self.map_spn[1] - self.spn_delta) % 90
+        if event.key() == Qt.Key_PageUp and self.map_spn + self.spn_delta <= 90:
+            self.map_spn = (self.map_spn + self.spn_delta) % 90
+        elif event.key() == Qt.Key_PageDown and self.map_spn - self.spn_delta >= -90:
+            self.map_spn = (self.map_spn - self.spn_delta) % 90
         elif event.key() == Qt.Key_Up:
             self.map_ll[1] = (self.map_ll[1] + self.ll_delta) % (90 if self.map_ll[1] > 0 else -90)
         elif event.key() == Qt.Key_Down and self.map_ll[1] - self.ll_delta >= -90:
@@ -73,9 +73,17 @@ class MapAPI(QMainWindow):
             self.map_ll[0] = (self.map_ll[0] + self.ll_delta) % (180 if self.map_ll[1] > 0 else -180)
         self.set_image()
 
+    def get_click_ll(self, x, y):
+        focused_widget = QApplication.focusWidget()
+        focused_widget.clearFocus()  # to get absolute image position
+        lon = float()
+        lat = float()
+        self.map_pt = (lon, lat)
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            center_x, center_y = self.image.width() / 2, self.image.height() / 2
+            self.get_click_ll(event.x(), event.y())
+            self.set_image()
         elif event.button() == Qt.RightButton:
             pass
 

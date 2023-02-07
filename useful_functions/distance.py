@@ -10,8 +10,8 @@ def lonlat_distance(a, b):
     b_lon, b_lat = b
 
     # Берем среднюю по широте точку и считаем коэффициент для нее.
-    radians_lattitude = math.radians((a_lat + b_lat) / 2.)
-    lat_lon_factor = math.cos(radians_lattitude)
+    radians_latitude = math.radians((a_lat + b_lat) / 2.)
+    lat_lon_factor = math.cos(radians_latitude)
 
     # Вычисляем смещения в метрах по вертикали и горизонтали.
     dx = abs(a_lon - b_lon) * degree_to_meters_factor * lat_lon_factor
